@@ -37,6 +37,7 @@ defmodule NervesBinaryClock.MixProject do
       {:ring_logger, "~> 0.8.1"},
       {:toolshed, "~> 0.2.13"},
       {:circuits_spi, "~> 1.2"},
+      {:nerves_time_zones, "~> 0.1.10"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
 
