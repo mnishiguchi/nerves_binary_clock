@@ -14,6 +14,7 @@ defmodule NervesBinaryClock.MixProject do
       start_permanent: Mix.env() == :prod,
       build_embedded: true,
       deps: deps(),
+      aliases: aliases(),
       releases: [{@app, release()}],
       preferred_cli_target: [run: :host, test: :host]
     ]
@@ -35,6 +36,8 @@ defmodule NervesBinaryClock.MixProject do
       {:shoehorn, "~> 0.7.0"},
       {:ring_logger, "~> 0.8.1"},
       {:toolshed, "~> 0.2.13"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.11.3", targets: @all_targets},
@@ -66,6 +69,15 @@ defmodule NervesBinaryClock.MixProject do
       include_erts: &Nerves.Release.erts/0,
       steps: [&Nerves.Release.init/1, :assemble],
       strip_beams: Mix.env() == :prod or [keep: ["Docs"]]
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      format: ["format", "credo"],
+      dialyzer: ["format", "dialyzer"]
     ]
   end
 end
