@@ -35,6 +35,7 @@ defmodule NervesBinaryClock.Application do
       # Children for all targets except host
       # Starts a worker by calling: NervesBinaryClock.Worker.start_link(arg)
       # {NervesBinaryClock.Worker, arg},
+      {NervesBinaryClock.Server, Application.get_all_env(:nerves_binary_clock)}
     ]
   end
 
