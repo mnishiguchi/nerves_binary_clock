@@ -12,7 +12,7 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
   @impl true
   def open(_bus_name \\ nil) do
     # The service layer will respond to this message.
-    :timer.send_interval(1_000, :tick)
+    :timer.send_interval(1_000, :tick_binary_clock)
 
     %__MODULE__{}
   end

@@ -11,7 +11,7 @@ defmodule NervesBinaryClock.BinaryClock.Target do
   @impl true
   def open(bus_name) do
     # The service layer will respond to this message.
-    :timer.send_interval(1_000, :tick)
+    :timer.send_interval(1_000, :tick_binary_clock)
 
     bus_name = bus_name || hd(Circuits.SPI.bus_names())
     {:ok, spi} = Circuits.SPI.open(bus_name)
