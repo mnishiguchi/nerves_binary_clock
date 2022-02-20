@@ -11,12 +11,25 @@ defmodule NervesBinaryClock.Server do
   @default_spi_bus_name "spidev0.0"
   @default_brightness 0x060
 
+  @type binary_clock_mod ::
+          NervesBinaryClock.BinaryClock.Dev
+          | NervesBinaryClock.BinaryClock.Target
+          | NervesBinaryClock.BinaryClock.Test
+
+  @type option ::
+          {:spi_bus_name, String.t()}
+          | {:binary_clock_mod, binary_clock_mod}
+          | {:brightness, 0x000..0xFFF}
+
+  @spec start_link([option]) :: GenServer.on_start()
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
+  @spec brightness :: 0x000..0xFFF
   def brightness(), do: GenServer.call(__MODULE__, :brightness)
 
+  @spec set_brightness(0x000..0xFFF) :: :ok
   def set_brightness(value), do: GenServer.cast(__MODULE__, {:set_brightness, value})
 
   @impl true
