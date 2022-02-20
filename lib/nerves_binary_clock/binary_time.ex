@@ -1,4 +1,4 @@
-defmodule NervesBinaryClock.Time do
+defmodule NervesBinaryClock.BinaryTime do
   @moduledoc """
   The clock time core logic that translates an Elixir time to LEDs upon request.
   """
@@ -19,19 +19,19 @@ defmodule NervesBinaryClock.Time do
 
   ## Examples
 
-      iex> NervesBinaryClock.Time.new(%{hour: 13,  minute: 34, second: 38})
-      %NervesBinaryClock.Time{ampm: 1, hour: 1, minute: 34, second: 38}
+      iex> NervesBinaryClock.BinaryTime.new(%{hour: 13,  minute: 34, second: 38})
+      %NervesBinaryClock.BinaryTime{ampm: 1, hour: 1, minute: 34, second: 38}
 
-      iex> NervesBinaryClock.Time.new(%{hour: 13,  minute: 34, second: 38})
-      ...> |> NervesBinaryClock.Time.to_leds(:none)
+      iex> NervesBinaryClock.BinaryTime.new(%{hour: 13,  minute: 34, second: 38})
+      ...> |> NervesBinaryClock.BinaryTime.to_leds(:none)
       [0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0]
 
-      iex> NervesBinaryClock.Time.new(%{hour: 13,  minute: 34, second: 38})
-      ...> |> NervesBinaryClock.Time.to_leds(:bytes)
+      iex> NervesBinaryClock.BinaryTime.new(%{hour: 13,  minute: 34, second: 38})
+      ...> |> NervesBinaryClock.BinaryTime.to_leds(:bytes)
       <<0::12, 96::12, 0::12, 0::12, 0::12, 96::12, 96::12, 0::12, 0::12, 0::12, 0::12, 0::12, 0::12, 0::12, 0::12, 0::12, 0::12, 96::12, 96::12, 0::12, 0::12, 96::12, 96::12, 0::12>>
 
-      iex> NervesBinaryClock.Time.new(%{hour: 13,  minute: 34, second: 38})
-      ...> |> NervesBinaryClock.Time.to_leds(:pretty)
+      iex> NervesBinaryClock.BinaryTime.new(%{hour: 13,  minute: 34, second: 38})
+      ...> |> NervesBinaryClock.BinaryTime.to_leds(:pretty)
       "-**--**----------**---*-"
 
   """

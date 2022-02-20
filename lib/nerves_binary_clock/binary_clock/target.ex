@@ -29,8 +29,8 @@ defmodule NervesBinaryClock.BinaryClock.Target do
   defp transfer(adapter) do
     bytes =
       adapter.time
-      |> NervesBinaryClock.Time.new()
-      |> NervesBinaryClock.Time.to_leds(:bytes)
+      |> NervesBinaryClock.BinaryTime.new()
+      |> NervesBinaryClock.BinaryTime.to_leds(:bytes)
 
     {:ok, _} = Circuits.SPI.transfer(adapter.spi, bytes)
 

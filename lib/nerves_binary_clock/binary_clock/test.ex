@@ -35,8 +35,8 @@ defmodule NervesBinaryClock.BinaryClock.Test do
   defp concat_bits(adapter) do
     bits =
       adapter.time
-      |> NervesBinaryClock.Time.new()
-      |> NervesBinaryClock.Time.to_leds(:none)
+      |> NervesBinaryClock.BinaryTime.new()
+      |> NervesBinaryClock.BinaryTime.to_leds(:none)
 
     # `:bits` accumulates consecutive clock readings.
     %{adapter | bits: [bits | adapter.bits]}
