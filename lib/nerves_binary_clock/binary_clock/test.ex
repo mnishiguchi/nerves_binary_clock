@@ -1,44 +1,44 @@
 defmodule NervesBinaryClock.BinaryClock.Test do
   @moduledoc """
-  The `NervesBinaryClock.BinaryClock.Test` adapter is a mock convenient for tests.
+  This adapter is a mock convenient for tests.
 
   ## Examples
 
-      iex> BinaryClock.Test.open() |> BinaryClock.Test.show(~T[17:06:40.107983])
-      %NervesBinaryClock.BinaryClock.Test{
-        bits: [
-          [0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0]
-        ],
-        time: ~T[17:06:40.107983]
-      }
+      BinaryClock.Test.new
+      |> BinaryClock.open
+      |> BinaryClock.show(~T[13:35:35.926971])
 
   """
 
-  @behaviour NervesBinaryClock.BinaryClock
+  defstruct [:bus_name, :time, bits: []]
 
-  defstruct [:time, bits: []]
-
-  @impl true
-  def open(_bus_name \\ nil) do
-    # We do not tick in test.
-
-    %__MODULE__{}
+  def new(bus_name \\ nil) do
+    %__MODULE__{bus_name: bus_name}
   end
 
-  @impl true
-  def show(adapter, time) do
-    adapter
-    |> struct!(time: time)
-    |> concat_bits
-  end
+  defimpl NervesBinaryClock.BinaryClock do
+    @impl true
+    def open(adapter) do
+      # We do not tick in test.
 
-  defp concat_bits(adapter) do
-    bits =
-      adapter.time
-      |> NervesBinaryClock.BinaryTime.new()
-      |> NervesBinaryClock.BinaryTime.to_leds(:none)
+      adapter
+    end
 
-    # `:bits` accumulates consecutive clock readings.
-    %{adapter | bits: [bits | adapter.bits]}
+    @impl true
+    def show(adapter, time) do
+      adapter
+      |> struct!(time: time)
+      |> concat_bits
+    end
+
+    defp concat_bits(adapter) do
+      bits =
+        adapter.time
+        |> NervesBinaryClock.BinaryTime.new()
+        |> NervesBinaryClock.BinaryTime.to_leds(:none)
+
+      # `:bits` accumulates consecutive clock readings.
+      %{adapter | bits: [bits | adapter.bits]}
+    end
   end
 end

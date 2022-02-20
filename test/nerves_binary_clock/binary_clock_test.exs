@@ -1,12 +1,13 @@
 defmodule NervesBinaryClock.BinaryClockTest do
   use ExUnit.Case
-  import NervesBinaryClock.BinaryClock.Test
+  alias NervesBinaryClock.BinaryClock
 
   test "Tracks time" do
     adapter =
-      open(:unused)
-      |> show(~T[01:02:04.0])
-      |> show(~T[01:02:05.0])
+      BinaryClock.Test.new()
+      |> BinaryClock.open()
+      |> BinaryClock.show(~T[01:02:04.0])
+      |> BinaryClock.show(~T[01:02:05.0])
 
     [second, first] = adapter.bits
 
