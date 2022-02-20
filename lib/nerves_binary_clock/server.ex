@@ -6,18 +6,18 @@ defmodule NervesBinaryClock.Server do
 
   use GenServer
 
-  defstruct [:binary_clock, :brightness]
+  defstruct [:clockwork, :brightness]
 
   @default_brightness 0x060
 
-  @type binary_clock_mod ::
+  @type clockwork_mod ::
           NervesBinaryClock.BinaryClock.Dev
           | NervesBinaryClock.BinaryClock.Target
           | NervesBinaryClock.BinaryClock.Test
 
   @type option ::
           {:spi_bus_name, String.t()}
-          | {:binary_clock_mod, binary_clock_mod}
+          | {:clockwork_mod, clockwork_mod}
           | {:brightness, 0x000..0xFFF}
 
   @spec start_link([option]) :: GenServer.on_start()
@@ -34,13 +34,13 @@ defmodule NervesBinaryClock.Server do
   @impl true
   def init(opts) do
     bus_name = opts[:spi_bus_name]
-    binary_clock_mod = opts[:binary_clock_mod] || NervesBinaryClock.BinaryClock.Dev
+    clockwork_mod = opts[:clockwork_mod] || NervesBinaryClock.BinaryClock.Dev
     brightness = opts[:brightness] || @default_brightness
 
-    binary_clock = init_binary_clock(binary_clock_mod, bus_name)
+    clockwork = init_wall_clock(clockwork_mod, bus_name)
 
     state = %__MODULE__{
-      binary_clock: binary_clock,
+      clockwork: clockwork,
       brightness: brightness
     }
 
@@ -48,10 +48,10 @@ defmodule NervesBinaryClock.Server do
   end
 
   @impl true
-  def handle_info(:tick_binary_clock, state) do
-    binary_clock = advance_binary_clock(state.binary_clock, state.brightness)
+  def handle_info(:tick_clockwork, state) do
+    clockwork = advance_time(state.clockwork, state.brightness)
 
-    {:noreply, %{state | binary_clock: binary_clock}}
+    {:noreply, %{state | clockwork: clockwork}}
   end
 
   @impl true
@@ -64,13 +64,13 @@ defmodule NervesBinaryClock.Server do
     {:reply, state.brightness, state}
   end
 
-  defp init_binary_clock(binary_clock_mod, bus_name) do
-    binary_clock = binary_clock_mod.new(bus_name) |> NervesBinaryClock.BinaryClock.open()
-    %{__struct__: ^binary_clock_mod} = binary_clock
+  defp init_wall_clock(clockwork_mod, bus_name) do
+    clockwork = clockwork_mod.new(bus_name) |> NervesBinaryClock.Clockwork.open()
+    %{__struct__: ^clockwork_mod} = clockwork
   end
 
-  defp advance_binary_clock(binary_clock, brightness) do
-    NervesBinaryClock.BinaryClock.show(binary_clock, local_time(), brightness: brightness)
+  defp advance_time(clockwork, brightness) do
+    NervesBinaryClock.Clockwork.show(clockwork, local_time(), brightness: brightness)
   end
 
   defp local_time() do

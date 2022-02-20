@@ -5,8 +5,8 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
   ## Examples
 
       BinaryClock.Dev.new
-      |> BinaryClock.open
-      |> BinaryClock.show(~T[13:35:35.926971])
+      |> Clockwork.open
+      |> Clockwork.show(~T[13:35:35.926971])
 
   """
 
@@ -16,13 +16,13 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     %__MODULE__{bus_name: bus_name}
   end
 
-  defimpl NervesBinaryClock.BinaryClock do
+  defimpl NervesBinaryClock.Clockwork do
     require Logger
 
     @impl true
     def open(adapter) do
       # The service layer will respond to this message.
-      :timer.send_interval(1_000, :tick_binary_clock)
+      :timer.send_interval(1_000, :tick_clockwork)
 
       adapter
     end

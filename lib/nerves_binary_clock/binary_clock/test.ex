@@ -5,8 +5,8 @@ defmodule NervesBinaryClock.BinaryClock.Test do
   ## Examples
 
       BinaryClock.Test.new
-      |> BinaryClock.open
-      |> BinaryClock.show(~T[13:35:35.926971])
+      |> Clockwork.open
+      |> Clockwork.show(~T[13:35:35.926971])
 
   """
 
@@ -16,7 +16,7 @@ defmodule NervesBinaryClock.BinaryClock.Test do
     %__MODULE__{bus_name: bus_name}
   end
 
-  defimpl NervesBinaryClock.BinaryClock do
+  defimpl NervesBinaryClock.Clockwork do
     @impl true
     def open(adapter) do
       # We do not tick in test.
