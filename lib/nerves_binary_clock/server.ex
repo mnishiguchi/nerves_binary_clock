@@ -8,7 +8,6 @@ defmodule NervesBinaryClock.Server do
 
   defstruct [:binary_clock, :brightness]
 
-  @default_spi_bus_name "spidev0.0"
   @default_brightness 0x060
 
   @type binary_clock_mod ::
@@ -34,7 +33,7 @@ defmodule NervesBinaryClock.Server do
 
   @impl true
   def init(opts) do
-    bus_name = opts[:spi_bus_name] || @default_spi_bus_name
+    bus_name = opts[:spi_bus_name]
     binary_clock_mod = opts[:binary_clock_mod] || NervesBinaryClock.BinaryClock.Dev
     brightness = opts[:brightness] || @default_brightness
 

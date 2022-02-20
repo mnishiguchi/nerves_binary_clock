@@ -12,7 +12,7 @@ defmodule NervesBinaryClock.BinaryClock.Target do
 
   defstruct [:bus_name, :spi, :time]
 
-  def new(bus_name) do
+  def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
 
@@ -25,7 +25,7 @@ defmodule NervesBinaryClock.BinaryClock.Target do
       bus_name = bus_name || hd(Circuits.SPI.bus_names())
       {:ok, spi} = Circuits.SPI.open(bus_name)
 
-      %{adapter | spi: spi}
+      %{adapter | spi: spi, bus_name: bus_name}
     end
 
     @impl true

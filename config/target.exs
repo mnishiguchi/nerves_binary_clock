@@ -92,9 +92,7 @@ config :mdns_lite,
 
 config :nerves_time_zones, default_time_zone: "America/New_York"
 
-config :nerves_binary_clock,
-  binary_clock_mod: NervesBinaryClock.BinaryClock.Target,
-  spi_bus_name: "spidev0.0"
+config :nerves_binary_clock, binary_clock_mod: NervesBinaryClock.BinaryClock.Target
 
 # Import target specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
