@@ -6,6 +6,8 @@ defmodule NervesBinaryClock.Server do
 
   use GenServer
 
+  defstruct [:binary_clock]
+
   @default_spi_bus_name "spidev0.0"
 
   def start_link(opts \\ []) do
@@ -18,19 +20,21 @@ defmodule NervesBinaryClock.Server do
     binary_clock_mod = opts[:binary_clock_mod] || NervesBinaryClock.BinaryClock.Dev
 
     binary_clock = init_binary_clock(binary_clock_mod, bus_name)
+    state = %__MODULE__{binary_clock: binary_clock}
 
-    {:ok, binary_clock}
+    {:ok, state}
   end
 
   @impl true
-  def handle_info(:tick_binary_clock, binary_clock) do
-    {:noreply, advence_binary_clock(binary_clock)}
+  def handle_info(:tick_binary_clock, state) do
+    state = %{state | binary_clock: advence_binary_clock(state.binary_clock)}
+
+    {:noreply, state}
   end
 
   defp init_binary_clock(binary_clock_mod, bus_name) do
-    %{__struct__: ^binary_clock_mod} =
-      binary_clock_mod.new(bus_name)
-      |> NervesBinaryClock.BinaryClock.open()
+    binary_clock = binary_clock_mod.new(bus_name) |> NervesBinaryClock.BinaryClock.open()
+    %{__struct__: ^binary_clock_mod} = binary_clock
   end
 
   defp advence_binary_clock(binary_clock) do
