@@ -28,7 +28,7 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     end
 
     @impl true
-    def show(adapter, time) do
+    def show(adapter, time, _opts \\ []) do
       adapter
       |> struct!(time: time)
       |> log

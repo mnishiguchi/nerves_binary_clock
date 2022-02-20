@@ -25,7 +25,7 @@ defmodule NervesBinaryClock.BinaryClock.Test do
     end
 
     @impl true
-    def show(adapter, time) do
+    def show(adapter, time, _opts \\ []) do
       adapter
       |> struct!(time: time)
       |> concat_bits

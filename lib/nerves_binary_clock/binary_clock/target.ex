@@ -29,17 +29,19 @@ defmodule NervesBinaryClock.BinaryClock.Target do
     end
 
     @impl true
-    def show(adapter, time) do
+    def show(adapter, time, opts \\ []) do
+      brightness = opts[:brightness]
+
       adapter
       |> struct!(time: time)
-      |> transfer()
+      |> transfer(brightness)
     end
 
-    defp transfer(adapter) do
+    defp transfer(adapter, brightness) do
       bytes =
         adapter.time
         |> NervesBinaryClock.BinaryTime.new()
-        |> NervesBinaryClock.BinaryTime.to_leds(:bytes)
+        |> NervesBinaryClock.BinaryTime.to_leds(:bytes, brightness: brightness)
 
       {:ok, _} = Circuits.SPI.transfer(adapter.spi, bytes)
 
