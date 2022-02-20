@@ -50,7 +50,7 @@ defmodule NervesBinaryClock.Server do
 
   @impl true
   def handle_info(:tick_binary_clock, state) do
-    binary_clock = advence_binary_clock(state.binary_clock, state.brightness)
+    binary_clock = advance_binary_clock(state.binary_clock, state.brightness)
 
     {:noreply, %{state | binary_clock: binary_clock}}
   end
@@ -70,7 +70,7 @@ defmodule NervesBinaryClock.Server do
     %{__struct__: ^binary_clock_mod} = binary_clock
   end
 
-  defp advence_binary_clock(binary_clock, brightness) do
+  defp advance_binary_clock(binary_clock, brightness) do
     NervesBinaryClock.BinaryClock.show(binary_clock, local_time(), brightness: brightness)
   end
 
