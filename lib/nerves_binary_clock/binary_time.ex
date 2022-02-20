@@ -115,11 +115,11 @@ defmodule NervesBinaryClock.BinaryTime do
   @spec to_bytes([0 | 1], keyword()) :: bitstring
   def to_bytes(list, opts \\ []) do
     brightness = opts[:brightness] || @default_brightness
-    for bit <- Enum.reverse(list), into: <<>>, do: to_channel_value_bitstring(bit, brightness)
+    for bit <- Enum.reverse(list), into: <<>>, do: to_led_value_bitstring(bit, brightness)
   end
 
-  defp to_channel_value_bitstring(0, _brightness), do: <<0::12>>
-  defp to_channel_value_bitstring(1, brightness), do: <<brightness::12>>
+  defp to_led_value_bitstring(0, _brightness), do: <<0::12>>
+  defp to_led_value_bitstring(1, brightness), do: <<brightness::12>>
 
   @doc """
   Converts a list of zeros and ones to a pretty string representation.
@@ -132,9 +132,9 @@ defmodule NervesBinaryClock.BinaryTime do
   """
   @spec to_pretty_bytes([0 | 1], keyword()) :: String.t()
   def to_pretty_bytes(list, _opts \\ []) when is_list(list) do
-    for bit <- list, into: "", do: to_pretty_channel_value(bit)
+    for bit <- list, into: "", do: to_pretty_led_value(bit)
   end
 
-  defp to_pretty_channel_value(0), do: "-"
-  defp to_pretty_channel_value(1), do: "*"
+  defp to_pretty_led_value(0), do: "-"
+  defp to_pretty_led_value(1), do: "*"
 end
