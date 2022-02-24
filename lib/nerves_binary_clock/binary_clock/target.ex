@@ -43,7 +43,7 @@ defmodule NervesBinaryClock.BinaryClock.Target do
         |> NervesBinaryClock.BinaryTime.new()
         |> NervesBinaryClock.BinaryTime.to_leds(:bytes, brightness: brightness)
 
-      {:ok, _} = Circuits.SPI.transfer(adapter.spi, bytes)
+      Circuits.SPI.transfer!(adapter.spi, bytes)
 
       adapter
     end
