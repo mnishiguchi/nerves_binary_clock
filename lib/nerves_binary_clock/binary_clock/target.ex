@@ -1,16 +1,9 @@
 defmodule NervesBinaryClock.BinaryClock.Target do
   @moduledoc """
   This adapter physically opens the bus and sends the bytes representing the clock face.
-
-  ## Examples
-
-      BinaryClock.Target.new
-      |> Clockwork.open()
-      |> Clockwork.show(time: ~T[13:35:35.926971])
-
   """
 
-  defstruct [:bus_name, :spi, :time]
+  defstruct [:bus_name, :cancel_timer_fn, :spi, :time]
 
   alias NervesBinaryClock.BinaryClock
 
@@ -22,12 +15,13 @@ defmodule NervesBinaryClock.BinaryClock.Target do
     @impl true
     def open(adapter) do
       # The service layer will respond to this message.
-      :timer.send_interval(1_000, :tick_clockwork)
+      {:ok, timer} = :timer.send_interval(1_000, :tick_clockwork)
+      cancel_timer_fn = fn -> :timer.cancel(timer) end
 
       bus_name = adapter.bus_name || hd(Circuits.SPI.bus_names())
       {:ok, spi} = Circuits.SPI.open(bus_name)
 
-      %{adapter | spi: spi, bus_name: bus_name}
+      %{adapter | bus_name: bus_name, cancel_timer_fn: cancel_timer_fn, spi: spi}
     end
 
     @impl true
@@ -49,6 +43,12 @@ defmodule NervesBinaryClock.BinaryClock.Target do
       Circuits.SPI.transfer!(adapter.spi, bytes)
 
       adapter
+    end
+
+    @impl true
+    def close(adapter) do
+      {:ok, :cancel} = adapter.cancel_timer_fn.()
+      :ok
     end
   end
 end

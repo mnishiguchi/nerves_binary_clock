@@ -4,13 +4,16 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
 
   ## Examples
 
-      BinaryClock.Dev.new
-      |> Clockwork.open
-      |> Clockwork.show(~T[13:35:35.926971])
+      alias NervesBinaryClock.Clockwork
+      alias NervesBinaryClock.BinaryClock
+
+      clock = Clockwork.open(BinaryClock.Dev.new)
+      clock = Clockwork.show(clock, time: ~T[13:35:35.926971])
+      Clockwork.close(clock)
 
   """
 
-  defstruct [:bus_name, :time]
+  defstruct [:bus_name, :cancel_timer_fn, :time]
 
   alias NervesBinaryClock.BinaryClock
 
@@ -24,9 +27,10 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     @impl true
     def open(adapter) do
       # The service layer will respond to this message.
-      :timer.send_interval(1_000, :tick_clockwork)
+      {:ok, timer} = :timer.send_interval(1_000, :tick_clockwork)
+      cancel_timer_fn = fn -> :timer.cancel(timer) end
 
-      adapter
+      %{adapter | cancel_timer_fn: cancel_timer_fn}
     end
 
     @impl true
@@ -47,6 +51,12 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
       Logger.debug("Clock face: #{face}")
 
       adapter
+    end
+
+    @impl true
+    def close(adapter) do
+      {:ok, :cancel} = adapter.cancel_timer_fn.()
+      :ok
     end
   end
 end

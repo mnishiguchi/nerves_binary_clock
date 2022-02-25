@@ -1,13 +1,6 @@
 defmodule NervesBinaryClock.BinaryClock.Test do
   @moduledoc """
   This adapter is a mock convenient for tests.
-
-  ## Examples
-
-      BinaryClock.Test.new
-      |> Clockwork.open
-      |> Clockwork.show(~T[13:35:35.926971])
-
   """
 
   defstruct [:bus_name, :time, bits: []]
@@ -43,6 +36,12 @@ defmodule NervesBinaryClock.BinaryClock.Test do
 
       # `:bits` accumulates consecutive clock readings.
       %{adapter | bits: [bits | adapter.bits]}
+    end
+
+    @impl true
+    def close(adapter) do
+      adapter.cancel_timer_fn.()
+      :ok
     end
   end
 end

@@ -18,4 +18,8 @@ defprotocol NervesBinaryClock.Clockwork do
   @doc "Shows the provided time somehow."
   @spec show(struct, keyword) :: struct
   def show(adapter, opts \\ [])
+
+  @doc "Closes an adapter."
+  @spec close(struct) :: :ok
+  def close(adapter)
 end
