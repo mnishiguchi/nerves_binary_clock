@@ -13,7 +13,11 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
 
   """
 
-  defstruct [:bus_name, :cancel_timer_fn, :time]
+  defstruct [
+    :bus_name,
+    :cancel_timer_fn,
+    :time
+  ]
 
   alias NervesBinaryClock.BinaryClock
 

@@ -9,15 +9,11 @@ defmodule NervesBinaryClock.Server do
   defstruct [:clockwork, :brightness]
 
   @default_brightness 0x060
-
-  @type clockwork_mod ::
-          NervesBinaryClock.BinaryClock.Dev
-          | NervesBinaryClock.BinaryClock.Target
-          | NervesBinaryClock.BinaryClock.Test
+  @default_clockwork_mod NervesBinaryClock.BinaryClock.Dev
 
   @type option ::
           {:spi_bus_name, String.t()}
-          | {:clockwork_mod, clockwork_mod}
+          | {:clockwork_mod, atom}
           | {:brightness, 0x000..0xFFF}
 
   @spec start_link([option]) :: GenServer.on_start()
@@ -34,7 +30,7 @@ defmodule NervesBinaryClock.Server do
   @impl true
   def init(opts) do
     bus_name = opts[:spi_bus_name]
-    clockwork_mod = opts[:clockwork_mod] || NervesBinaryClock.BinaryClock.Dev
+    clockwork_mod = opts[:clockwork_mod] || @default_clockwork_mod
     brightness = opts[:brightness] || @default_brightness
 
     clockwork = init_wall_clock(clockwork_mod, bus_name)

@@ -3,7 +3,11 @@ defmodule NervesBinaryClock.BinaryClock.Test do
   This adapter is a mock convenient for tests.
   """
 
-  defstruct [:bus_name, :time, bits: []]
+  defstruct [
+    :bus_name,
+    :time,
+    bits: []
+  ]
 
   alias NervesBinaryClock.BinaryClock
 

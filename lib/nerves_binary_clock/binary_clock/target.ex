@@ -3,7 +3,12 @@ defmodule NervesBinaryClock.BinaryClock.Target do
   This adapter physically opens the bus and sends the bytes representing the clock face.
   """
 
-  defstruct [:bus_name, :cancel_timer_fn, :spi, :time]
+  defstruct [
+    :bus_name,
+    :cancel_timer_fn,
+    :spi,
+    :time
+  ]
 
   alias NervesBinaryClock.BinaryClock
 
