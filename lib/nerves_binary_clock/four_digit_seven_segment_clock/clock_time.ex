@@ -12,7 +12,7 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTime do
 
   defstruct [
     :display_type,
-    :seconds_since_zero_minute,
+    :seconds,
     :tlc5947_channel_lookup
   ]
 
@@ -41,7 +41,7 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTime do
 
   @type t :: %__MODULE__{
           display_type: boolean,
-          seconds_since_zero_minute: 0..3599,
+          seconds: 0..3599,
           tlc5947_channel_lookup: tlc5947_channel_lookup
         }
 
@@ -64,39 +64,47 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTime do
     {:common_cathode, false} => 1
   }
 
+  @default_display_type :common_anode
+  @default_tlc5947_channel_lookup %{
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+    f: 5,
+    g: 6,
+    p: 7,
+    digit1: 8,
+    digit2: 9,
+    digit3: 10,
+    digit4: 11,
+  }
+
   @doc """
-  Takes an Elixir time and converts that time to the accumulator struct.
+  Takes an Elixir time and converts it to a list of bits for the presentation.
   """
-  @spec new(Time.t(), keyword) :: t()
-  def new(%{calendar: _, hour: _, minute: _, second: _, microsecond: _} = time, opts \\ []) do
-    display_type = Access.get(opts, :display_type, :common_anode)
-    tlc5947_channel_lookup = Access.fetch!(opts, :tlc5947_channel_lookup)
+  def to_leds(%{calendar: _, hour: _, minute: _, second: _, microsecond: _} = time, format_type, opts \\ []) do
+    display_type = opts[:display_type] || @default_display_type
+    tlc5947_channel_lookup = opts[:tlc5947_channel_lookup] || @default_tlc5947_channel_lookup
 
     seconds_since_zero_minute = Time.diff(time, %{time | minute: 0, second: 0})
 
-    %__MODULE__{
-      tlc5947_channel_lookup: tlc5947_channel_lookup,
-      display_type: display_type,
-      seconds_since_zero_minute: seconds_since_zero_minute
-    }
-  end
-
-  @doc """
-  Takes a clock struct and converts it to a list of bits for the presentation.
-  """
-  def to_leds(%__MODULE__{} = time, format_type, opts \\ []) do
     # Four lists of 24 bits
     number_to_bit_lookups(
-      time.seconds_since_zero_minute,
-      time.display_type,
-      time.tlc5947_channel_lookup
+      seconds_since_zero_minute,
+      display_type,
+      tlc5947_channel_lookup
     )
     |> Enum.map(fn bit_lookup ->
       Enum.map(0..23, fn ch ->
-        bit_lookup[channel_key(ch)] || default_bit(time.display_type)
+        bit_lookup[channel_key(ch)] || default_bit(display_type)
       end)
       |> Utils.formatter(format_type, opts)
     end)
+  end
+
+  def seconds_since_zero_minute(time) do
+    Time.diff(time, %{time | minute: 0, second: 0})
   end
 
   @spec number_to_bit_lookups(0..9999, display_type, tlc5947_channel_lookup, p_flags) :: [any]

@@ -21,14 +21,9 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTimeTest do
   @default_opts [tlc5947_channel_lookup: @tlc5947_channel_lookup]
 
   test "Constructor calculates seconds since zero minute" do
-    time1 = FourDigitSevenSegmentClock.ClockTime.new(~N[2022-02-21 01:29:59], @default_opts)
-    assert time1.seconds_since_zero_minute == 1799
-
-    time2 = FourDigitSevenSegmentClock.ClockTime.new(~N[2022-02-21 02:29:59], @default_opts)
-    assert time2.seconds_since_zero_minute == 1799
-
-    time3 = FourDigitSevenSegmentClock.ClockTime.new(~N[2022-02-21 03:59:59], @default_opts)
-    assert time3.seconds_since_zero_minute == 3599
+    assert seconds_since_zero_minute(~N[2022-02-21 01:29:59]) == 1799
+    assert seconds_since_zero_minute(~N[2022-02-21 02:29:59]) == 1799
+    assert seconds_since_zero_minute(~N[2022-02-21 03:59:59]) == 3599
   end
 
   test "Translate one-digit number to seven segment code without decimal point" do
@@ -81,8 +76,6 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTimeTest do
   end
 
   test "Translate four-digit number to a list of four TLC5947 datasets" do
-    time1 = FourDigitSevenSegmentClock.ClockTime.new(~N[2022-02-21 01:29:59], @default_opts)
-
     {expected, _} =
       Code.eval_string("""
       [
@@ -93,6 +86,6 @@ defmodule NervesBinaryClock.FourDigitSevenSegmentClock.ClockTimeTest do
       ]
       """)
 
-    assert to_leds(time1, :bytes) == expected
+    assert to_leds(~N[2022-02-21 01:29:59], :bytes, @default_opts) == expected
   end
 end
