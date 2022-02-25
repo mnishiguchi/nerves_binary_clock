@@ -70,10 +70,6 @@ defmodule NervesBinaryClock.Server do
   end
 
   defp advance_time(clockwork, brightness) do
-    NervesBinaryClock.Clockwork.show(clockwork, local_time(), brightness: brightness)
-  end
-
-  defp local_time() do
-    NaiveDateTime.local_now()
+    NervesBinaryClock.Clockwork.show(clockwork, brightness: brightness)
   end
 end

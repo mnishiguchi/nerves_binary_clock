@@ -5,8 +5,8 @@ defmodule NervesBinaryClock.BinaryClock.Target do
   ## Examples
 
       BinaryClock.Target.new
-      |> Clockwork.open
-      |> Clockwork.show(~T[13:35:35.926971])
+      |> Clockwork.open()
+      |> Clockwork.show(time: ~T[13:35:35.926971])
 
   """
 
@@ -20,18 +20,19 @@ defmodule NervesBinaryClock.BinaryClock.Target do
 
   defimpl NervesBinaryClock.Clockwork do
     @impl true
-    def open(%{bus_name: bus_name} = adapter) do
+    def open(adapter) do
       # The service layer will respond to this message.
       :timer.send_interval(1_000, :tick_clockwork)
 
-      bus_name = bus_name || hd(Circuits.SPI.bus_names())
+      bus_name = adapter.bus_name || hd(Circuits.SPI.bus_names())
       {:ok, spi} = Circuits.SPI.open(bus_name)
 
       %{adapter | spi: spi, bus_name: bus_name}
     end
 
     @impl true
-    def show(adapter, time, opts \\ []) do
+    def show(adapter, opts \\ []) do
+      time = opts[:time] || NaiveDateTime.local_now()
       brightness = opts[:brightness]
 
       adapter

@@ -30,7 +30,9 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     end
 
     @impl true
-    def show(adapter, time, _opts \\ []) do
+    def show(adapter, opts \\ []) do
+      time = opts[:time] || NaiveDateTime.local_now()
+
       adapter
       |> struct!(time: time)
       |> log

@@ -16,6 +16,6 @@ defprotocol NervesBinaryClock.Clockwork do
   def open(adapter)
 
   @doc "Shows the provided time somehow."
-  @spec show(struct, time, keyword) :: struct
-  def show(adapter, time, opts \\ [])
+  @spec show(struct, keyword) :: struct
+  def show(adapter, opts \\ [])
 end
