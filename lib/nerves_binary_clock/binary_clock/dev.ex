@@ -12,6 +12,8 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
 
   defstruct [:bus_name, :time]
 
+  alias NervesBinaryClock.BinaryClock
+
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
@@ -37,8 +39,8 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     defp log(adapter) do
       face =
         adapter.time
-        |> NervesBinaryClock.BinaryTime.new()
-        |> NervesBinaryClock.BinaryTime.to_leds(:pretty)
+        |> BinaryClock.Time.new()
+        |> BinaryClock.Time.to_leds(:pretty)
 
       Logger.debug("Clock face: #{face}")
 

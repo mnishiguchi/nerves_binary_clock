@@ -12,6 +12,8 @@ defmodule NervesBinaryClock.BinaryClock.Target do
 
   defstruct [:bus_name, :spi, :time]
 
+  alias NervesBinaryClock.BinaryClock
+
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
@@ -40,8 +42,8 @@ defmodule NervesBinaryClock.BinaryClock.Target do
     defp transfer(adapter, brightness) do
       bytes =
         adapter.time
-        |> NervesBinaryClock.BinaryTime.new()
-        |> NervesBinaryClock.BinaryTime.to_leds(:bytes, brightness: brightness)
+        |> BinaryClock.Time.new()
+        |> BinaryClock.Time.to_leds(:bytes, brightness: brightness)
 
       Circuits.SPI.transfer!(adapter.spi, bytes)
 

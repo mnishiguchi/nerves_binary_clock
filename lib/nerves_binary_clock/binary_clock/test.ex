@@ -12,6 +12,8 @@ defmodule NervesBinaryClock.BinaryClock.Test do
 
   defstruct [:bus_name, :time, bits: []]
 
+  alias NervesBinaryClock.BinaryClock
+
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
@@ -34,8 +36,8 @@ defmodule NervesBinaryClock.BinaryClock.Test do
     defp concat_bits(adapter) do
       bits =
         adapter.time
-        |> NervesBinaryClock.BinaryTime.new()
-        |> NervesBinaryClock.BinaryTime.to_leds(:none)
+        |> BinaryClock.Time.new()
+        |> BinaryClock.Time.to_leds(:none)
 
       # `:bits` accumulates consecutive clock readings.
       %{adapter | bits: [bits | adapter.bits]}

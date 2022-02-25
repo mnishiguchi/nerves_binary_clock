@@ -1,7 +1,7 @@
 defprotocol NervesBinaryClock.Clockwork do
   @moduledoc """
-  A contract for interacting with the binary clock hardware. Each adapter implementation will
-  handle a different use case.
+  A contract for interacting with the clock hardware. Each adapter
+  implementation will handle a different use case.
   """
 
   @type time :: %{
