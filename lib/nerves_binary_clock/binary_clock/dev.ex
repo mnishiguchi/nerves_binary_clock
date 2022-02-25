@@ -45,8 +45,8 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     defp log(adapter) do
       face =
         adapter.time
-        |> BinaryClock.Time.new()
-        |> BinaryClock.Time.to_leds(:pretty)
+        |> BinaryClock.ClockTime.new()
+        |> BinaryClock.ClockTime.to_leds(:pretty)
 
       Logger.debug("Clock face: #{face}")
 
