@@ -49,11 +49,12 @@ defmodule HelloNervesClock.BinaryClock.ClockTime do
   Takes a clock struct and converts it to a list of bits for the presentation.
   """
   def to_leds(%__MODULE__{} = time, format_type, opts \\ []) do
+    # 4 * 6 bits = 24 channels
     [
-      time.second |> Utils.padded_bits() |> Enum.reverse(),
-      time.hour |> Utils.padded_bits() |> Enum.reverse(),
-      time.ampm |> Utils.padded_bits(),
-      time.minute |> Utils.padded_bits()
+      time.second |> Utils.padded_bits(6) |> Enum.reverse(),
+      time.hour |> Utils.padded_bits(6) |> Enum.reverse(),
+      time.ampm |> Utils.padded_bits(6),
+      time.minute |> Utils.padded_bits(6)
     ]
     |> List.flatten()
     |> Utils.formatter(format_type, opts)
