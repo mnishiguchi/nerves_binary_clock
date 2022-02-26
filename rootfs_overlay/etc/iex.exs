@@ -4,3 +4,7 @@ NervesMOTD.print()
 use Toolshed
 
 alias HelloNervesClock.Clockwork
+alias HelloNervesClock.BinaryClock
+alias HelloNervesClock.Server
+
+import HelloNervesClock.Utils
