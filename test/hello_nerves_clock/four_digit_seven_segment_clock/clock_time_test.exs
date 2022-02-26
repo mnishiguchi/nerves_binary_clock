@@ -27,13 +27,13 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.ClockTimeTest do
   end
 
   test "Translate one-digit number to seven segment code without decimal point" do
-    assert one_digit_to_pgfedcba_bits(3, :common_anode) == [1, 0, 1, 1, 0, 0, 0, 0]
-    assert one_digit_to_pgfedcba_bits(3, :common_cathode) == [0, 1, 0, 0, 1, 1, 1, 1]
+    assert one_digit_to_pgfedcba_bits(3, :common_anode) == [0, 0, 1, 1, 0, 0, 0, 0]
+    assert one_digit_to_pgfedcba_bits(3, :common_cathode) == [1, 1, 0, 0, 1, 1, 1, 1]
   end
 
   test "Translate one-digit number to seven segment code with decimal point" do
-    assert one_digit_to_pgfedcba_bits(3, :common_anode, true) == [0, 0, 1, 1, 0, 0, 0, 0]
-    assert one_digit_to_pgfedcba_bits(3, :common_cathode, true) == [1, 1, 0, 0, 1, 1, 1, 1]
+    assert one_digit_to_pgfedcba_bits(3, :common_anode, true) == [1, 0, 1, 1, 0, 0, 0, 0]
+    assert one_digit_to_pgfedcba_bits(3, :common_cathode, true) == [0, 1, 0, 0, 1, 1, 1, 1]
   end
 
   test "PGFEDCBA bits to TLC5947 channel bits" do
@@ -65,10 +65,10 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.ClockTimeTest do
     {expected, _} =
       Code.eval_string("""
       [
-        %{"12": 1, "13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21": 0, "22": 1, "23": 1},
-        %{"12": 0, "13": 1, "14": 0, "15": 0, "16": 0, "17": 0, "18": 1, "19": 0, "20": 0, "21": 1, "22": 0, "23": 1},
-        %{"12": 0, "13": 0, "14": 1, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 1, "21": 1, "22": 0, "23": 1},
-        %{"12": 0, "13": 0, "14": 0, "15": 1, "16": 1, "17": 0, "18": 0, "19": 1, "20": 1, "21": 0, "22": 0, "23": 1}
+        %{"12": 1, "13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 0, "21": 0, "22": 1, "23": 0},
+        %{"12": 0, "13": 1, "14": 0, "15": 0, "16": 0, "17": 0, "18": 1, "19": 0, "20": 0, "21": 1, "22": 0, "23": 0},
+        %{"12": 0, "13": 0, "14": 1, "15": 0, "16": 0, "17": 0, "18": 0, "19": 0, "20": 1, "21": 1, "22": 0, "23": 0},
+        %{"12": 0, "13": 0, "14": 0, "15": 1, "16": 1, "17": 0, "18": 0, "19": 1, "20": 1, "21": 0, "22": 0, "23": 0}
       ]
       """)
 
@@ -76,16 +76,11 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.ClockTimeTest do
   end
 
   test "Translate four-digit number to a list of four TLC5947 datasets" do
-    {expected, _} =
-      Code.eval_string("""
-      [
-        <<6, 0, 96, 6, 0, 96, 6, 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>>,
-        <<6, 0, 96, 6, 0, 96, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>>,
-        <<6, 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>>,
-        <<6, 0, 0, 0, 0, 96, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>>
-      ]
-      """)
-
-    assert to_leds(~N[2022-02-21 01:29:59], :bytes, @default_opts) == expected
+    assert to_leds(~N[2022-02-21 01:29:59], :bytes, @default_opts) == [
+             "\0\0`\x06\0`\x06\0\0\0\0`\0\0\0\0\0`\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+             "\0\0`\x06\0`\x06\0\0\0\0\0\0\0\0\x06\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+             "\0\0\0\0\0`\0\0\0\0\0\0\0\0`\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",
+             "\0\0\0\0\0`\0\0\0\0\0\0\x06\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+           ]
   end
 end

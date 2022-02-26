@@ -82,6 +82,13 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.ClockTime do
 
   @doc """
   Takes an Elixir time and converts it to a list of bits for the presentation.
+
+  ## Examples
+  ```
+  FourDigitSevenSegmentClock.ClockTime.to_leds(NaiveDateTime.local_now, :none)
+  FourDigitSevenSegmentClock.ClockTime.to_leds(NaiveDateTime.local_now, :bytes)
+  FourDigitSevenSegmentClock.ClockTime.to_leds(NaiveDateTime.local_now, :pretty)
+  ```
   """
   def to_leds(%{calendar: _, hour: _, minute: _, second: _, microsecond: _} = time, format_type, opts \\ []) do
     display_type = opts[:display_type] || @default_display_type
@@ -163,10 +170,10 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.ClockTime do
     |> set_p(display_type, with_p)
   end
 
-  defp set_p([_p | rest], :common_anode, true), do: [0 | rest]
-  defp set_p([_p | rest], :common_anode, false), do: [1 | rest]
-  defp set_p([_p | rest], :common_cathode, true), do: [1 | rest]
-  defp set_p([_p | rest], :common_cathode, false), do: [0 | rest]
+  defp set_p([_p | rest], :common_anode, true), do: [1 | rest]
+  defp set_p([_p | rest], :common_anode, false), do: [0 | rest]
+  defp set_p([_p | rest], :common_cathode, true), do: [0 | rest]
+  defp set_p([_p | rest], :common_cathode, false), do: [1 | rest]
 
   defp default_bit(:common_anode), do: 0
   defp default_bit(:common_cathode), do: 1

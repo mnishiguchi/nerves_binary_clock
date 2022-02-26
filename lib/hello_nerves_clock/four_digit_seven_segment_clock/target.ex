@@ -39,9 +39,12 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.Target do
     end
 
     defp transfer(adapter, opts) do
-      bytes = FourDigitSevenSegmentClock.ClockTime.to_leds(adapter.time, :pretty, opts)
+      lists_of_bytes = FourDigitSevenSegmentClock.ClockTime.to_leds(adapter.time, :bytes, opts)
 
-      Circuits.SPI.transfer!(adapter.spi, bytes)
+      Enum.each(lists_of_bytes, fn bytes ->
+        Circuits.SPI.transfer!(adapter.spi, bytes)
+        Process.sleep(200)
+      end)
 
       adapter
     end

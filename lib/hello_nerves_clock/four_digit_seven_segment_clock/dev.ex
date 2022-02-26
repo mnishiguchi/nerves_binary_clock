@@ -47,9 +47,9 @@ defmodule HelloNervesClock.FourDigitSevenSegmentClock.Dev do
     end
 
     defp log(adapter, opts) do
-      clock_face = FourDigitSevenSegmentClock.ClockTime.to_leds(adapter.time, :pretty, opts)
+      clock_faces = FourDigitSevenSegmentClock.ClockTime.to_leds(adapter.time, :pretty, opts)
 
-      Logger.debug("Clock face: #{clock_face}")
+      Logger.debug("Clock face: |#{Enum.intersperse(clock_faces, "|")}|")
 
       adapter
     end

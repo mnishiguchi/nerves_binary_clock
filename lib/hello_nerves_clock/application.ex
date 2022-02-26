@@ -27,6 +27,7 @@ defmodule HelloNervesClock.Application do
       # Children that only run on the host
       # Starts a worker by calling: HelloNervesClock.Worker.start_link(arg)
       # {HelloNervesClock.Worker, arg},
+      # {HelloNervesClock.Server, clockwork_mod: HelloNervesClock.FourDigitSevenSegmentClock.Dev}
     ]
   end
 
@@ -35,7 +36,7 @@ defmodule HelloNervesClock.Application do
       # Children for all targets except host
       # Starts a worker by calling: NervesBinaryClock.Worker.start_link(arg)
       # {NervesBinaryClock.Worker, arg},
-      {NervesBinaryClock.Server, Application.get_all_env(:hello_nerves_clock)}
+      {HelloNervesClock.Server, Application.get_all_env(:hello_nerves_clock)}
     ]
   end
 

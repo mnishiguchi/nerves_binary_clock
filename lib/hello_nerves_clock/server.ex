@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:lib/hello_nerves_clock/server.ex
-defmodule NervesBinaryClock.Server do
-========
-defmodule HelloNervesClock.BinaryClockServer do
->>>>>>>> 055dc04 (Rename nerves_binary_clock to hello_nerves_clock):lib/hello_nerves_clock/binary_clock_server.ex
+defmodule HelloNervesClock.Server do
   @moduledoc """
   The service layer that processes periodic requests for time and delegates the task of showing the
   local time to configurable adapter layers.
@@ -37,7 +33,7 @@ defmodule HelloNervesClock.BinaryClockServer do
     clockwork_mod = opts[:clockwork_mod] || @default_clockwork_mod
     brightness = opts[:brightness] || @default_brightness
 
-    clockwork = init_wall_clock(clockwork_mod, bus_name)
+    clockwork = init_clockwork(clockwork_mod, bus_name)
 
     state = %__MODULE__{
       clockwork: clockwork,
@@ -64,7 +60,7 @@ defmodule HelloNervesClock.BinaryClockServer do
     {:reply, state.brightness, state}
   end
 
-  defp init_wall_clock(clockwork_mod, bus_name) do
+  defp init_clockwork(clockwork_mod, bus_name) do
     clockwork = clockwork_mod.new(bus_name) |> HelloNervesClock.Clockwork.open()
     %{__struct__: ^clockwork_mod} = clockwork
   end
