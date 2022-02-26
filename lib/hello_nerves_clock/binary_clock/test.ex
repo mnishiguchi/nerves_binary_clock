@@ -1,4 +1,4 @@
-defmodule NervesBinaryClock.BinaryClock.Test do
+defmodule HelloNervesClock.BinaryClock.Test do
   @moduledoc """
   This adapter is a mock convenient for tests.
   """
@@ -9,13 +9,13 @@ defmodule NervesBinaryClock.BinaryClock.Test do
     bits: []
   ]
 
-  alias NervesBinaryClock.BinaryClock
+  alias HelloNervesClock.BinaryClock
 
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
 
-  defimpl NervesBinaryClock.Clockwork do
+  defimpl HelloNervesClock.Clockwork do
     @impl true
     def open(adapter) do
       # We do not tick in test.

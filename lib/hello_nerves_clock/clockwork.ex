@@ -1,4 +1,4 @@
-defprotocol NervesBinaryClock.Clockwork do
+defprotocol HelloNervesClock.Clockwork do
   @moduledoc """
   A contract for interacting with the clock hardware. Each adapter
   implementation will handle a different use case.

@@ -1,4 +1,4 @@
-# NervesBinaryClock
+# HelloNervesClock
 
 [![](https://pragprog.com/titles/thnerves/build-a-binary-clock-with-elixir-and-nerves/thnerves-beta-250.jpg)](https://pragprog.com/titles/thnerves/build-a-binary-clock-with-elixir-and-nerves/)
 

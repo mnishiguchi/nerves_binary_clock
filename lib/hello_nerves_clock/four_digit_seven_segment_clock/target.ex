@@ -1,4 +1,4 @@
-defmodule NervesBinaryClock.BinaryClock.Target do
+defmodule HelloNervesClock.FourDigitSevenSegmentClock.Target do
   @moduledoc """
   This adapter physically opens the bus and sends the bytes representing the clock face.
   """
@@ -10,13 +10,13 @@ defmodule NervesBinaryClock.BinaryClock.Target do
     :time
   ]
 
-  alias NervesBinaryClock.BinaryClock
+  alias HelloNervesClock.FourDigitSevenSegmentClock
 
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
 
-  defimpl NervesBinaryClock.Clockwork do
+  defimpl HelloNervesClock.Clockwork do
     @impl true
     def open(adapter) do
       # The service layer will respond to this message.
@@ -32,18 +32,14 @@ defmodule NervesBinaryClock.BinaryClock.Target do
     @impl true
     def show(adapter, opts \\ []) do
       time = opts[:time] || NaiveDateTime.local_now()
-      brightness = opts[:brightness]
 
       adapter
       |> struct!(time: time)
-      |> transfer(brightness)
+      |> transfer(opts)
     end
 
-    defp transfer(adapter, brightness) do
-      bytes =
-        adapter.time
-        |> BinaryClock.ClockTime.new()
-        |> BinaryClock.ClockTime.to_leds(:bytes, brightness: brightness)
+    defp transfer(adapter, opts) do
+      bytes = FourDigitSevenSegmentClock.ClockTime.to_leds(adapter.time, :pretty, opts)
 
       Circuits.SPI.transfer!(adapter.spi, bytes)
 

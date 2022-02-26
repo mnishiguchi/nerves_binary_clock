@@ -1,7 +1,7 @@
-defmodule NervesBinaryClock.MixProject do
+defmodule HelloNervesClock.MixProject do
   use Mix.Project
 
-  @app :nerves_binary_clock
+  @app :hello_nerves_clock
   @version "0.1.0"
   @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :rpi4, :bbb, :osd32mp1, :x86_64]
 
@@ -23,7 +23,7 @@ defmodule NervesBinaryClock.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {NervesBinaryClock.Application, []},
+      mod: {HelloNervesClock.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

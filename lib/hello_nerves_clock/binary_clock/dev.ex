@@ -1,11 +1,11 @@
-defmodule NervesBinaryClock.BinaryClock.Dev do
+defmodule HelloNervesClock.BinaryClock.Dev do
   @moduledoc """
   This adapter is a mock convenient for IEx.
 
   ## Examples
 
-      alias NervesBinaryClock.Clockwork
-      alias NervesBinaryClock.BinaryClock
+      alias HelloNervesClock.Clockwork
+      alias HelloNervesClock.BinaryClock
 
       clock = Clockwork.open(BinaryClock.Dev.new)
       clock = Clockwork.show(clock, time: ~T[13:35:35.926971])
@@ -19,13 +19,13 @@ defmodule NervesBinaryClock.BinaryClock.Dev do
     :time
   ]
 
-  alias NervesBinaryClock.BinaryClock
+  alias HelloNervesClock.BinaryClock
 
   def new(bus_name \\ nil) do
     %__MODULE__{bus_name: bus_name}
   end
 
-  defimpl NervesBinaryClock.Clockwork do
+  defimpl HelloNervesClock.Clockwork do
     require Logger
 
     @impl true

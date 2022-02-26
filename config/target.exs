@@ -92,7 +92,7 @@ config :mdns_lite,
 
 config :nerves_time_zones, default_time_zone: "America/New_York"
 
-config :nerves_binary_clock, clockwork_mod: NervesBinaryClock.BinaryClock.Target
+config :hello_nerves_clock, clockwork_mod: HelloNervesClock.BinaryClock.Target
 
 # Import target specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

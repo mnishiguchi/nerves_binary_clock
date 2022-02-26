@@ -1,7 +1,7 @@
-defmodule NervesBinaryClock.BinaryClockTest do
+defmodule HelloNervesClock.BinaryClockTest do
   use ExUnit.Case
-  alias NervesBinaryClock.Clockwork
-  alias NervesBinaryClock.BinaryClock
+  alias HelloNervesClock.Clockwork
+  alias HelloNervesClock.BinaryClock
 
   test "Tracks time" do
     adapter =

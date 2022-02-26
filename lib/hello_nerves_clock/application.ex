@@ -1,4 +1,4 @@
-defmodule NervesBinaryClock.Application do
+defmodule HelloNervesClock.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,13 +9,13 @@ defmodule NervesBinaryClock.Application do
   def start(_type, _args) do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: NervesBinaryClock.Supervisor]
+    opts = [strategy: :one_for_one, name: HelloNervesClock.Supervisor]
 
     children =
       [
         # Children for all targets
-        # Starts a worker by calling: NervesBinaryClock.Worker.start_link(arg)
-        # {NervesBinaryClock.Worker, arg},
+        # Starts a worker by calling: HelloNervesClock.Worker.start_link(arg)
+        # {HelloNervesClock.Worker, arg},
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)
@@ -25,8 +25,8 @@ defmodule NervesBinaryClock.Application do
   def children(:host) do
     [
       # Children that only run on the host
-      # Starts a worker by calling: NervesBinaryClock.Worker.start_link(arg)
-      # {NervesBinaryClock.Worker, arg},
+      # Starts a worker by calling: HelloNervesClock.Worker.start_link(arg)
+      # {HelloNervesClock.Worker, arg},
     ]
   end
 
@@ -35,11 +35,11 @@ defmodule NervesBinaryClock.Application do
       # Children for all targets except host
       # Starts a worker by calling: NervesBinaryClock.Worker.start_link(arg)
       # {NervesBinaryClock.Worker, arg},
-      {NervesBinaryClock.Server, Application.get_all_env(:nerves_binary_clock)}
+      {NervesBinaryClock.Server, Application.get_all_env(:hello_nerves_clock)}
     ]
   end
 
   def target() do
-    Application.get_env(:nerves_binary_clock, :target)
+    Application.get_env(:hello_nerves_clock, :target)
   end
 end

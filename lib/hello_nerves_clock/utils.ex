@@ -1,4 +1,4 @@
-defmodule NervesBinaryClock.Utils do
+defmodule HelloNervesClock.Utils do
   @moduledoc false
 
   @default_brightness 0x060

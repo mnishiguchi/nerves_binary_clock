@@ -1,6 +1,6 @@
-defmodule NervesBinaryClock do
+defmodule HelloNervesClock do
   @moduledoc """
-  Documentation for NervesBinaryClock.
+  Documentation for HelloNervesClock.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule NervesBinaryClock do
 
   ## Examples
 
-      iex> NervesBinaryClock.hello
+      iex> HelloNervesClock.hello
       :world
 
   """

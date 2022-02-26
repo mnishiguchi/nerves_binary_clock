@@ -1,11 +1,11 @@
-defmodule NervesBinaryClock.BinaryClock.ClockTime do
+defmodule HelloNervesClock.BinaryClock.ClockTime do
   @moduledoc """
   The clock time core logic that translates an Elixir time to LEDs upon request.
   """
 
   defstruct ~w[ampm hour minute second]a
 
-  alias NervesBinaryClock.Utils
+  alias HelloNervesClock.Utils
 
   @type t :: %__MODULE__{
           ampm: 0 | 1,
